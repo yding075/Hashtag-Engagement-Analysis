@@ -17,13 +17,15 @@ Third, a publicly available dataset from Kaggle containing YouTube video statist
 These sources will be used to analyze the relationship between keyword popularity and video engagement.
 
 # Results 
-_describe your findings_
+To be completed.
 
 # Installation
-- _describe what API keys, user must set where (in .enve) to be able to run the project._
-- _describe what special python packages you have used_
+- You need to set your YouTube API key in a .env file.
+- Required Python packages include: pandas, google-api-python-client, and pytest.
+- You can install dependencies using:
+  pip install -r requirements.txt
 
 # Running analysis 
 From the src directory:
 
-python main.py
+python load.py
