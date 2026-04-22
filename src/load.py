@@ -1,15 +1,60 @@
-import requests
+from googleapiclient.discovery import build
 import pandas as pd
+import os
+from dotenv import load_dotenv
 
-def get_api_data():
-    url =  "https://jsonplaceholder.typicode.com/posts"
-    response = requests.get(url, timeout=10)
-    response.raise_for_status()
+load_dotenv("src/.env")
 
-    data = response.json()
-    df = pd.DataFrame(data)
+API_KEY = os.getenv("YOUTUBE_API_KEY")
+
+
+def get_youtube_data():
+    youtube = build("youtube", "v3", developerKey=API_KEY)
+
+    keywords = [
+        "food",
+        "makeup",
+        "travel",
+        "fitness",
+        "gaming"
+    ]
+
+    all_videos = []
+
+    for keyword in keywords:
+        search_request = youtube.search().list(
+            q=keyword,
+            part="snippet",
+            maxResults=30,
+            type="video"
+        )
+        search_response = search_request.execute()
+
+        video_ids = [item["id"]["videoId"] for item in search_response["items"]]
+
+        video_request = youtube.videos().list(
+            part="statistics,snippet",
+            id=",".join(video_ids)
+        )
+        video_response = video_request.execute()
+
+        for item in video_response["items"]:
+            all_videos.append({
+                "keyword": keyword,
+                "videoId": item["id"],
+                "title": item["snippet"]["title"],
+                "views": int(item["statistics"].get("viewCount", 0)),
+                "likes": int(item["statistics"].get("likeCount", 0)),
+                "comments": int(item["statistics"].get("commentCount", 0)),
+            })
+
+    df = pd.DataFrame(all_videos)
+    df.to_csv("data/youtube_data.csv", index=False)
     return df
 
+
 if __name__ == "__main__":
-    df = get_api_data()
+    df = get_youtube_data()
     print(df.head())
+    print(df.columns.tolist())
+    print(df.groupby("keyword").size())
