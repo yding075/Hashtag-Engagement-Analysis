@@ -13,8 +13,20 @@ The goal is to understand whether more popular topics are associated with higher
 2. Kaggle dataset — provides large-scale YouTube video statistics for validation.
 3. Google Trends — measures keyword popularity over time.
 
+# Project Structure
+
+- `src/` — source code for data collection and analysis  
+- `data/` — collected datasets  
+- `results/` — generated visualizations  
+- `doc/` — project report  
+- `main.py` — entry point for running pipelines  
+
+# Outputs
+Generated figures are saved in the `results/` folder.  
+Processed datasets are saved in the `data/` folder.
+
 # Results 
--Makeup videos show the highest average views.
+-Makeup videos show the highest average views, indicating strong visual-driven engagement.
 -Food videos receive the highest average likes.
 -Makeup videos generate the most comments.
 -Keyword popularity is related to engagement, but the relationship is not always consistent.
